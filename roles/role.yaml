@@ -1,0 +1,9 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argo-role
+  namespace: {{ .Values.namespace | quote }}
+rules:
+  - apiGroups: ["*"]
+    resources: ["pods", "pods/log", "secrets", "configmaps"]
+    verbs: ["get", "watch", "list", "create", "delete"]

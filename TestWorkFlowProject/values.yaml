@@ -1,0 +1,4 @@
+namespace: default
+images:
+  whalesay: andyglen/testworkflowstep1:latest
+  echo: andyglen/testworkflow2:latest

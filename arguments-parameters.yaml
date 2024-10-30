@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: hello-world-parameters-
+spec:
+  # invoke the print-message template with "hello world" as the argument to the message parameter
+  entrypoint: print-message
+  arguments:
+    parameters:
+    - name: message
+      value: hello world
+    - name: messageCaps
+      value: hello caps
+
+  templates:
+  - name: print-message
+    inputs:
+      parameters:
+      - name: message       # parameter declaration
+    container:
+      # run echo with that message input parameter as args
+      image: busybox
+      command: [echo]
+      args: ["{{inputs.parameters.message}}"]
+  - name: print-message-caps
+    inputs:
+      parameters:
+      - name: messageCaps       # parameter declaration
+    container:
+      # run echo with that message input parameter as args
+      image: busybox
+      command: [echo]
+      args: ["{{inputs.parameters.messageCaps}}"]

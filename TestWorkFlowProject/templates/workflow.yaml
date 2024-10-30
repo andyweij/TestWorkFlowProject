@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: {{ .Release.Name }}-workflow
+spec:
+  entrypoint: main
+  serviceAccountName: argo-service-account
+  templates:
+    - name: main
+      steps:
+        - - name: step1
+            template: whalesay
+        - - name: step2
+            template: echo
+
+    - name: whalesay
+      container:
+        image: {{ .Values.images.whalesay }}
+        command: ["/bin/sh", "-c"]
+        args: ["echo Hello from Workflow!"]
+
+    - name: echo
+      container:
+        image: {{ .Values.images.echo }}
+        command: ["/bin/sh", "-c"]
+        args: ["echo This is step 2."]
