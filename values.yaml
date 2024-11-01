@@ -1,4 +1,10 @@
-namespace: default
+#docker:
+#  registry:
+#    server: https://index.docker.io/v1/
+#    username: andyglen
+#    password: andy990770 # 不建議直接在這裡硬編碼密碼
+#    email: a126n54d@gmail.com
+namespace: test
 images:
-  whalesay: andyglen/testworkflowstep1:latest
-  echo: andyglen/testworkflow2:latest
+  whalesay: andyglen/testworkflowstep1:v1
+  echo: andyglen/testworkflow2:v1
