@@ -1,0 +1,12 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: pulsar-eventsource
+spec:
+  pulsar:
+    example-source:
+      url: pulsar://host.docker.internal:6650 # 替換為您的 Pulsar URL
+      topics:
+        - Andy  # 主題名稱
+      type: exclusive
+      jsonBody: true

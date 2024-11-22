@@ -1,12 +1,29 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
-  name: argo-cluster-role-test
-  namespace: {{ .Values.namespace | quote }}
+  name: operate-workflow-role
+  namespace: {{ .Values.namespace }}  # 指定命名空間
 rules:
-  - apiGroups: ["argoproj.io"] # 必須明確指定 API Group
-    resources: ["workflowtaskresults"] # 添加所需的資源
-    verbs: ["get", "list", "create", "delete", "patch"] # 視需求添加動作
-  - apiGroups: [""] # 示例：基礎 Kubernetes 資源
-    resources: ["pods", "pods/log", "secrets", "configmaps"]
-    verbs: ["get", "watch", "list", "create", "delete", "patch"]
+  - apiGroups:
+      - argoproj.io
+    verbs:
+      - "*"
+    resources:
+      - workflows
+      - workflowtemplates
+      - cronworkflows
+      - clusterworkflowtemplates
+---
+
+#apiVersion: rbac.authorization.k8s.io/v1
+#kind: ClusterRole
+#metadata:
+#  name: argo-cluster-role-test
+#  namespace: argo-events
+#rules:
+#  - apiGroups: ["argoproj.io"] # 必須明確指定 API Group
+#    resources: ["workflows"]
+#    verbs: ["get", "list", "create", "delete", "patch"] # 視需求添加動作
+#  - apiGroups: [""] # 示例：基礎 Kubernetes 資源
+#    resources: ["pods", "pods/log", "secrets", "configmaps"]
+#    verbs: ["get", "watch", "list", "create", "delete", "patch"]

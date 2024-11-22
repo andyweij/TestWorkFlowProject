@@ -4,7 +4,10 @@
 #    username: andyglen
 #    password: andy990770 # 不建議直接在這裡硬編碼密碼
 #    email: a126n54d@gmail.com
+#workflowTemplateName: {{ .Release.Name }}-workflow
 namespace: test
 images:
   whalesay: andyglen/testworkflowstep1:v12
   echo: andyglen/testworkflow2:v3
+#fileNameToDelete: "test-file.txt"  # 要刪除的檔案名稱
+
