@@ -6,5 +6,5 @@
 #    email: a126n54d@gmail.com
 namespace: test
 images:
-  whalesay: andyglen/testworkflowstep1:v1
-  echo: andyglen/testworkflow2:v1
+  whalesay: andyglen/testworkflowstep1:v12
+  echo: andyglen/testworkflow2:v3

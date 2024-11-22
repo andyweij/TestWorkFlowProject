@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
-  name: argo-role-binding
+  name: argo-cluster-role-binding-test
   namespace: {{ .Values.namespace | quote }}
 subjects:
   - kind: ServiceAccount
@@ -9,5 +9,5 @@ subjects:
     namespace: {{ .Values.namespace | quote }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: argo-role
+  kind: ClusterRole
+  name: argo-cluster-role-test
