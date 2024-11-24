@@ -1,8 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
   name: operate-workflow-role
-  namespace: {{ .Values.namespace }}  # 指定命名空間
 rules:
   - apiGroups:
       - argoproj.io
@@ -13,6 +12,8 @@ rules:
       - workflowtemplates
       - cronworkflows
       - clusterworkflowtemplates
+      - workflowtaskresults
+
 ---
 
 #apiVersion: rbac.authorization.k8s.io/v1
