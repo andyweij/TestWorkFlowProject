@@ -9,6 +9,8 @@ spec:
     parameters:
       - name: input
         value: ""  # 默認值，會被觸發器的數據覆蓋
+      - name: output
+        value: ""
   templates:
   - name: main
     inputs:
@@ -28,6 +30,6 @@ spec:
 
   - name: test2
     container:
-      image: {{ .Values.images.test2 }}
-      command: ["/bin/sh", "-c"]
-      args: ["echo This is step 2."]
+      image: busybox
+      command: [echo]
+      args: ['{{"{{"}}workflow.parameters.output{{"}}"}}']
