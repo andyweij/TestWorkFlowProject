@@ -4,9 +4,11 @@ metadata:
   name: pulsar-eventsource
 spec:
   pulsar:
-    example-source:
+    test-source:
       url: pulsar://host.docker.internal:6650 # 替換為您的 Pulsar URL
       topics:
-        - Andy  # 主題名稱
+      {{- range .Values.eventSource.test.subscribeTopics }}
+      - {{ . }}
+      {{- end }}
       type: exclusive
       jsonBody: true

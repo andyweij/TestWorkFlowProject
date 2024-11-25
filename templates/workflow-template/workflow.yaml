@@ -1,27 +1,30 @@
-#apiVersion: argoproj.io/v1alpha1
-#kind: Workflow
-#metadata:
-#  name: test-workflow
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  name: test-workflow
 #  namespace: argo-events
-#spec:
-#  entrypoint: main
-#  serviceAccountName: default
-#  templates:
-#    - name: main
-#      steps:
-#        - - name: step1
-#            template: whalesay
-#        - - name: step2
-#            template: echo
-#
-#    - name: whalesay
-#      container:
-#        image: {{ .Values.images.whalesay }}
-#        command: ["/bin/sh", "-c"]
-#        args: ["echo Hello from Workflow!"]
-#
-#    - name: echo
-#      container:
-#        image: {{ .Values.images.echo }}
-#        command: ["/bin/sh", "-c"]
-#        args: ["echo This is step 2."]
+spec:
+  entrypoint: main
+arguments:
+  parameters:
+    - name: input
+      value: ""  # 默認值，會被觸發器的數據覆蓋
+  templates:
+    - name: main
+      steps:
+        - - name: step1
+            template: whalesay
+        - - name: step2
+            template: echo
+
+    - name: whalesay
+      container:
+        image: {{ .Values.images.test1 }}
+        command: ["/bin/sh", "-c"]
+        args: ["echo Hello from Workflow!",'{{"{{"}}workflow.parameters.input{{"}}"}}']
+
+    - name: echo
+      container:
+        image: {{ .Values.images.test2 }}
+        command: ["/bin/sh", "-c"]
+        args: ["echo This is step 2."]

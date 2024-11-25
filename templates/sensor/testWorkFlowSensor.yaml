@@ -4,14 +4,14 @@ metadata:
   name: pulsar
 spec:
   template:
-    serviceAccountName: operate-workflow-sa
+    serviceAccountName: test-work
   dependencies:
     - name: test-dep
       eventSourceName: pulsar-eventsource
-      eventName: example-source
+      eventName: test-source
   triggers:
     - template:
-        name: workflow-trigger
+        name: test-workflow-trigger
         k8s:
           operation: create
           source:
@@ -19,24 +19,16 @@ spec:
               apiVersion: argoproj.io/v1alpha1
               kind: Workflow
               metadata:
-                generateName: pulsar-wf-
-                namespace: {{ .Values.namespace }}  # 指定命名空間
+                generateName: test-workflow-  # 自動生成名稱的前綴
               spec:
-                entrypoint: whalesay
+                entrypoint: main
+                workflowTemplateRef:
+                  name: test-workflow  # WorkflowTemplate 名稱
+                  clusterScope: true  # 是否集群範圍（視需求）
                 arguments:
                   parameters:
-                    - name: message
-                      # value will get overridden by the event payload
-                      value: hello world
-                templates:
-                  - name: whalesay
-                    inputs:
-                      parameters:
-                        - name: message
-                    container:
-                      image: {{ .Values.images.whalesay }}
-                      command: ["/bin/sh", "-c"]
-                      args: ["echo","{{`{{inputs.parameters.message}}`}}"]
+                    - name: input  # 添加 name 屬性
+                      value: "{{`{{inputs.parameters.message}}`}}"  # 使用事件數據映射到參數
           parameters:
             - src:
                 dependencyName: test-dep
@@ -67,3 +59,48 @@ spec:
 #                workflowTemplateRef:
 #                  name: test-workflow  # WorkflowTemplate 名稱
 #                  clusterScope: true  # 是否集群範圍（視需求）
+---
+#apiVersion: argoproj.io/v1alpha1
+#kind: Sensor
+#metadata:
+#  name: pulsar
+#spec:
+#  template:
+#    serviceAccountName: test-work
+#  dependencies:
+#    - name: test-dep
+#      eventSourceName: pulsar-eventsource
+#      eventName: test-source
+#  triggers:
+#    - template:
+#        name: test-workflow-trigger
+#        k8s:
+#          operation: create
+#          source:
+#            resource:
+#              apiVersion: argoproj.io/v1alpha1
+#              kind: Workflow
+#              metadata:
+#                generateName: pulsar-wf-
+#                namespace: {{ .Values.namespace }}  # 指定命名空間
+#              spec:
+#                entrypoint: whalesay
+#                arguments:
+#                  parameters:
+#                    - name: message
+#                      # value will get overridden by the event payload
+#                      value: hello world
+#                templates:
+#                  - name: whalesay
+#                    inputs:
+#                      parameters:
+#                        - name: message
+#                    container:
+#                      image: {{ .Values.images.whalesay }}
+#                      command: ["/bin/sh", "-c"]
+#                      args: ["echo","{{`{{inputs.parameters.message}}`}}"]
+#          parameters:
+#            - src:
+#                dependencyName: test-dep
+#                dataKey: body
+#              dest: spec.arguments.parameters.0.value

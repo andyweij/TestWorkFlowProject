@@ -7,7 +7,9 @@
 #workflowTemplateName: {{ .Release.Name }}-workflow
 namespace: test
 images:
-  whalesay: andyglen/testworkflowstep1:v12
-  echo: andyglen/testworkflow2:v3
-#fileNameToDelete: "test-file.txt"  # 要刪除的檔案名稱
-
+  test1: andyglen/testworkflowstep1:v12
+  test2: andyglen/testworkflow2:v3
+eventSource:
+  test:
+    subscribeTopics:
+      - Andy
