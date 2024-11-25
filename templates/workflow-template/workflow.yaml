@@ -5,26 +5,29 @@ metadata:
 #  namespace: argo-events
 spec:
   entrypoint: main
-arguments:
-  parameters:
-    - name: input
-      value: ""  # 默認值，會被觸發器的數據覆蓋
+  arguments:
+    parameters:
+      - name: input
+        value: ""  # 默認值，會被觸發器的數據覆蓋
   templates:
-    - name: main
-      steps:
-        - - name: step1
-            template: whalesay
-        - - name: step2
-            template: echo
+  - name: main
+    inputs:
+      parameters:
+        - name: message
+          value: hello world
+    steps:
+      - - name: step1
+          template: test1
+      - - name: step2
+          template: test2
+  - name: test1
+    container:
+      image: busybox
+      command: [echo]
+      args: ['{{"{{"}}workflow.parameters.input{{"}}"}}']
 
-    - name: whalesay
-      container:
-        image: {{ .Values.images.test1 }}
-        command: ["/bin/sh", "-c"]
-        args: ["echo Hello from Workflow!",'{{"{{"}}workflow.parameters.input{{"}}"}}']
-
-    - name: echo
-      container:
-        image: {{ .Values.images.test2 }}
-        command: ["/bin/sh", "-c"]
-        args: ["echo This is step 2."]
+  - name: test2
+    container:
+      image: {{ .Values.images.test2 }}
+      command: ["/bin/sh", "-c"]
+      args: ["echo This is step 2."]

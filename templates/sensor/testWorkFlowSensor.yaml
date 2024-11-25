@@ -28,7 +28,7 @@ spec:
                 arguments:
                   parameters:
                     - name: input  # 添加 name 屬性
-                      value: "{{`{{inputs.parameters.message}}`}}"  # 使用事件數據映射到參數
+                      value: ["{{`{{inputs.parameters}}`}}"]  # 使用事件數據映射到參數
           parameters:
             - src:
                 dependencyName: test-dep
